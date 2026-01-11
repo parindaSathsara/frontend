@@ -1,0 +1,324 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   LUXURY THEME - SH WOMENS
+   Black/White/Gold Crystal Theme
+   ======================================== */
+
+/* Base Styles */
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-luxury-white text-luxury-black;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* Elegant Selection */
+  ::selection {
+    @apply bg-gold-500 text-luxury-black;
+  }
+  
+  ::-moz-selection {
+    @apply bg-gold-500 text-luxury-black;
+  }
+}
+
+/* Component Styles */
+@layer components {
+  /* Gold Primary Button */
+  .btn-gold {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-gold-500 text-luxury-black font-semibold text-sm tracking-wider uppercase transition-all duration-300;
+  }
+  
+  .btn-gold:hover {
+    @apply bg-gold-600 shadow-gold transform -translate-y-0.5;
+  }
+  
+  /* Black Button */
+  .btn-black {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-luxury-black text-white font-semibold text-sm tracking-wider uppercase transition-all duration-300;
+  }
+  
+  .btn-black:hover {
+    @apply bg-luxury-charcoal shadow-luxury;
+  }
+  
+  /* Outline Button */
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-transparent text-luxury-black font-semibold text-sm tracking-wider uppercase border-2 border-luxury-black transition-all duration-300;
+  }
+  
+  .btn-outline:hover {
+    @apply bg-luxury-black text-white;
+  }
+  
+  .btn-outline-gold {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-transparent text-gold-500 font-semibold text-sm tracking-wider uppercase border-2 border-gold-500 transition-all duration-300;
+  }
+  
+  .btn-outline-gold:hover {
+    @apply bg-gold-500 text-luxury-black;
+  }
+  
+  /* Input Field */
+  .input-field {
+    @apply w-full px-5 py-4 bg-white border border-luxury-silver/30 text-luxury-black transition-all duration-300;
+  }
+  
+  .input-field:focus {
+    @apply outline-none border-gold-500 ring-2 ring-gold-500/20;
+  }
+  
+  .input-field::placeholder {
+    @apply text-luxury-silver/50;
+  }
+  
+  /* Luxury Card */
+  .card-luxury {
+    @apply bg-white border border-gold-500/10 p-6 transition-all duration-500;
+  }
+  
+  .card-luxury:hover {
+    @apply border-gold-500/30 shadow-elegant transform -translate-y-2;
+  }
+}
+
+/* Utility Styles */
+@layer utilities {
+  /* Vertical Writing Mode */
+  .writing-vertical-rl {
+    writing-mode: vertical-rl;
+  }
+  
+  /* Gold Gradient Text */
+  .text-gold-gradient {
+    @apply bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 bg-clip-text text-transparent;
+  }
+  
+  /* Gold Underline Animation */
+  .underline-gold {
+    position: relative;
+  }
+  
+  .underline-gold::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #D4AF37;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  
+  .underline-gold:hover::after {
+    transform: scaleX(1);
+  }
+  
+  /* Crystal Shine Effect */
+  .crystal-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .crystal-shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transform: skewX(-25deg);
+  }
+  
+  .crystal-shine:hover::before {
+    animation: shine 0.8s ease-out;
+  }
+  
+  /* Gold Border Gradient */
+  .border-gold-gradient {
+    border-image: linear-gradient(135deg, #D4AF37, #F4D57A, #D4AF37) 1;
+  }
+  
+  /* Line Clamp */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Animations */
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-gold {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #D4AF37, #B8860B);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FFD700, #D4AF37);
+}
+
+/* Focus Styles */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-gold-500;
+}
+
+/* Loader/Spinner */
+.loader-gold {
+  border: 3px solid transparent;
+  border-top-color: #D4AF37;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Overlay Styles */
+.overlay-dark {
+  @apply fixed inset-0 bg-luxury-black/80 backdrop-blur-sm z-40;
+}
+
+/* Container Max Widths */
+.container-luxury {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Responsive Typography */
+@screen sm {
+  .hero-title {
+    @apply text-5xl;
+  }
+}
+
+@screen md {
+  .hero-title {
+    @apply text-6xl;
+  }
+}
+
+@screen lg {
+  .hero-title {
+    @apply text-7xl;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    @apply bg-white text-black;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}
