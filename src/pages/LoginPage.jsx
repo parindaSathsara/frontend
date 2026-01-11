@@ -52,7 +52,7 @@ const LoginPage = () => {
         <div className="absolute top-8 left-8">
           <Link to="/" className="flex items-center">
             <img 
-              src="/src/logosh.png" 
+              src="/logosh.png" 
               alt="SH Womens" 
               className="h-12 w-auto brightness-0 invert"
             />
@@ -84,7 +84,7 @@ const LoginPage = () => {
           <div className="lg:hidden text-center mb-12">
             <Link to="/" className="inline-flex items-center">
               <img 
-                src="/src/logosh.png" 
+                src="/logosh.png" 
                 alt="SH Womens" 
                 className="h-12 w-auto"
               />

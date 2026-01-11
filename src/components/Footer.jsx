@@ -35,7 +35,7 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <Link to="/" className="inline-block mb-6">
               <img 
-                src="/src/logosh.png" 
+                src="/logosh.png" 
                 alt="SH Womens" 
                 className="h-12 w-auto brightness-0 invert"
               />

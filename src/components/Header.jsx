@@ -115,7 +115,7 @@ const Header = () => {
           {/* Center Logo */}
           <Link to="/" className="flex items-center">
             <img 
-              src="/src/logosh.png" 
+              src="/logosh.png" 
               alt="SH Womens" 
               className="h-10 md:h-12 w-auto"
             />

@@ -65,7 +65,7 @@ const AdminLayout = () => {
         <div className="h-16 flex items-center justify-between px-6 border-b border-gray-800">
           <Link to="/admin" className="flex items-center gap-2">
             <img 
-              src="/src/logosh.png" 
+              src="/logosh.png" 
               alt="SH Womens" 
               className="h-8 w-auto brightness-0 invert"
             />
