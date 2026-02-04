@@ -42,6 +42,7 @@ api.interceptors.response.use(
 export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
+  googleLogin: (data) => api.post('/auth/google', data),
   logout: () => api.post('/auth/logout'),
   getUser: () => api.get('/user'),
   updateProfile: (data) => api.put('/user/profile', data),
@@ -223,6 +224,8 @@ export const adminAPI = {
   getSettings: (params) => api.get('/admin/settings', { params }),
   getShippingSettings: () => api.get('/admin/settings/shipping'),
   updateShippingSettings: (data) => api.put('/admin/settings/shipping', data),
+  getBankSettings: () => api.get('/admin/settings/bank'),
+  updateBankSettings: (data) => api.put('/admin/settings/bank', data),
   updateSetting: (key, data) => api.put(`/admin/settings/${key}`, data),
 };
 

@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../components/Toast';
-import { orderAPI, cartAPI } from '../services/api';
+import { orderAPI, cartAPI, paymentAPI, getPublicShippingSettings } from '../services/api';
 import { useQuery } from 'react-query';
 import {
   ShoppingBagIcon,
@@ -18,6 +18,7 @@ import {
   DocumentArrowUpIcon,
   InformationCircleIcon,
   ClipboardDocumentIcon,
+  ScaleIcon,
 } from '@heroicons/react/24/outline';
 import { CheckCircleIcon as CheckCircleSolid } from '@heroicons/react/24/solid';
 
@@ -63,37 +64,48 @@ const CheckoutPage = () => {
   const [notes, setNotes] = useState('');
   const [bankReference, setBankReference] = useState('');
 
-  // Bank details for transfer
-  const bankDetails = {
-    bank_name: 'Bank of Ceylon',
-    account_number: '0012345678901',
-    account_name: 'SH Womens Fashion (Pvt) Ltd',
-    branch: 'Colombo Main Branch',
-    branch_code: '001',
-    swift_code: 'BABORLKX',
-  };
+  // Fetch bank details from API
+  const { data: bankDetails } = useQuery(
+    'bankDetails',
+    () => paymentAPI.getBankDetails().then(res => res.data),
+    {
+      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+      initialData: {
+        bank_name: 'Bank of Ceylon',
+        account_number: '',
+        account_name: 'SH Womens Fashion (Pvt) Ltd',
+        branch: '',
+        branch_code: '',
+        swift_code: '',
+      }
+    }
+  );
 
-  // Fetch cart from server if authenticated
-  const { data: serverCart } = useQuery(
+  // Fetch cart from server if authenticated (includes shipping breakdown)
+  const { data: serverCartData } = useQuery(
     'cart',
-    () => cartAPI.get().then(res => res.data.cart || res.data),
+    () => cartAPI.get().then(res => res.data),
     {
       enabled: isAuthenticated(),
     }
   );
 
+  const serverCart = serverCartData?.cart;
+  const shippingBreakdown = serverCartData?.shipping_breakdown;
+  
   const cart = isAuthenticated() ? serverCart : { items: cartItems, total: cartTotal };
   const displayItems = cart?.items || [];
   
-  // Calculate total from items directly (to avoid any backend calculation issues)
-  const displayTotal = displayItems.reduce((sum, item) => {
+  // Get subtotal and shipping from server cart
+  const displaySubtotal = parseFloat(cart?.subtotal || 0) || displayItems.reduce((sum, item) => {
     const price = parseFloat(item.price || item.product?.price || 0);
     const quantity = item.quantity || 1;
     return sum + (price * quantity);
-  }, 0) || cartTotal;
+  }, 0);
   
-  const shippingCost = 0; // Will be calculated based on weight at order placement
-  const finalTotal = displayTotal + shippingCost;
+  const displayDiscount = parseFloat(cart?.discount || 0);
+  const shippingCost = parseFloat(cart?.shipping || shippingBreakdown?.shipping_cost || 0);
+  const finalTotal = displaySubtotal - displayDiscount + shippingCost;
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -929,18 +941,52 @@ const CheckoutPage = () => {
               <div className="border-t border-luxury-silver/20 pt-4 space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-luxury-silver">Subtotal</span>
-                  <span>Rs. {displayTotal.toLocaleString()}</span>
+                  <span>Rs. {displaySubtotal.toLocaleString()}</span>
                 </div>
+                
+                {/* Shipping Breakdown */}
                 <div className="flex justify-between text-sm">
-                  <span className="text-luxury-silver">Shipping</span>
-                  <span className="text-gold-600">
-                    Calculated based on weight
-                  </span>
+                  <div className="flex items-center gap-1">
+                    <TruckIcon className="h-4 w-4 text-luxury-silver" />
+                    <span className="text-luxury-silver">Shipping</span>
+                  </div>
+                  {shippingBreakdown?.is_free_shipping ? (
+                    <span className="text-green-600 font-medium">FREE</span>
+                  ) : (
+                    <span>Rs. {shippingCost.toLocaleString()}</span>
+                  )}
                 </div>
-                <p className="text-xs text-luxury-silver">Flat rate: LKR 500 per kilo</p>
+                
+                {/* Weight info */}
+                {shippingBreakdown && (
+                  <div className="text-xs text-luxury-silver bg-luxury-pearl/50 p-2 rounded">
+                    <div className="flex items-center gap-1 mb-1">
+                      <ScaleIcon className="h-3 w-3" />
+                      <span>Total Weight: {shippingBreakdown.total_weight?.toFixed(2)} kg</span>
+                    </div>
+                    <span>Rate: Rs. {shippingBreakdown.rate_per_kg}/kg</span>
+                    {shippingBreakdown.free_shipping_threshold > 0 && (
+                      <div className="mt-1">
+                        {shippingBreakdown.is_free_shipping ? (
+                          <span className="text-green-600">✓ Free shipping applied!</span>
+                        ) : (
+                          <span>Free shipping on orders over Rs. {shippingBreakdown.free_shipping_threshold.toLocaleString()}</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+                
+                {displayDiscount > 0 && (
+                  <div className="flex justify-between text-sm text-green-600">
+                    <span>Discount</span>
+                    <span>-Rs. {displayDiscount.toLocaleString()}</span>
+                  </div>
+                )}
+                
                 <div className="flex justify-between text-lg font-semibold border-t border-luxury-silver/20 pt-3">
-                  <span>Subtotal</span>
-                  <span>Rs. {displayTotal.toLocaleString()}</span>
+                  <span>Total</span>
+                  <span>Rs. {finalTotal.toLocaleString()}</span>
                 </div>
               </div>
 

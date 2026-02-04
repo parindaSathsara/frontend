@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { bannerAPI, productAPI, albumAPI } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import AlbumCard from '../components/AlbumCard';
+import GoogleReviewWidget from '../components/GoogleReviewWidget';
 import { ArrowRightIcon, ArrowLongRightIcon, ChevronLeftIcon, ChevronRightIcon, SparklesIcon, TruckIcon, ShieldCheckIcon, GiftIcon } from '@heroicons/react/24/outline';
 
 const HomePage = () => {
@@ -358,6 +359,17 @@ const HomePage = () => {
           <p className="text-luxury-silver/50 text-xs mt-6">
             By subscribing, you agree to our Privacy Policy and consent to receive updates from our company.
           </p>
+        </div>
+      </section>
+
+      {/* Google Reviews Section */}
+      <section className="py-16 bg-luxury-pearl">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <span className="text-gold-500 text-sm tracking-[0.3em] uppercase mb-3 block">Customer Love</span>
+            <h2 className="font-serif text-4xl text-luxury-black">What Our Customers Say</h2>
+          </div>
+          <GoogleReviewWidget />
         </div>
       </section>
 

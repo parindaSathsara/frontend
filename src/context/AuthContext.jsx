@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authAPI } from '../services/api';
+import { auth, googleProvider } from '../config/firebase';
+import { signInWithPopup } from 'firebase/auth';
 
 const AuthContext = createContext(null);
 
@@ -45,6 +47,41 @@ export const AuthProvider = ({ children }) => {
       return {
         success: false,
         message: error.response?.data?.message || 'Login failed'
+      };
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    try {
+      // Sign in with Google popup
+      const result = await signInWithPopup(auth, googleProvider);
+      const firebaseUser = result.user;
+      
+      // Get Firebase ID token
+      const idToken = await firebaseUser.getIdToken();
+      
+      // Send token to backend for verification and user creation/login
+      const response = await authAPI.googleLogin({ 
+        token: idToken,
+        email: firebaseUser.email,
+        name: firebaseUser.displayName,
+        photo: firebaseUser.photoURL
+      });
+      
+      const { user: userData, token: authToken } = response.data;
+      
+      setUser(userData);
+      setToken(authToken);
+      
+      localStorage.setItem('token', authToken);
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      return { success: true, user: userData };
+    } catch (error) {
+      console.error('Google login error:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || error.message || 'Google login failed'
       };
     }
   };
@@ -96,6 +133,7 @@ export const AuthProvider = ({ children }) => {
     token,
     loading,
     login,
+    loginWithGoogle,
     register,
     logout,
     isAdmin,

@@ -16,6 +16,7 @@ import {
   ArrowRightOnRectangleIcon,
   ChevronDownIcon,
   UserCircleIcon,
+  BuildingLibraryIcon,
 } from '@heroicons/react/24/outline';
 
 const AdminLayout = () => {
@@ -35,6 +36,7 @@ const AdminLayout = () => {
     { name: 'Albums', href: '/admin/albums', icon: PhotoIcon },
     { name: 'Variations', href: '/admin/variations', icon: SwatchIcon },
     { name: 'Shipping', href: '/admin/settings/shipping', icon: TruckIcon },
+    { name: 'Bank Account', href: '/admin/settings/bank', icon: BuildingLibraryIcon },
   ];
 
   const isActive = (path) => {

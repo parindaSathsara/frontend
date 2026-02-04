@@ -5,3 +5,5 @@ export { default as AdminOrders } from './AdminOrders';
 export { default as AdminOrderDetail } from './AdminOrderDetail';
 export { default as AdminCustomers } from './AdminCustomers';
 export { default as AdminInventory } from './AdminInventory';
+export { default as AdminBankSettings } from './AdminBankSettings';
+export { default as AdminShippingSettings } from './AdminShippingSettings';
