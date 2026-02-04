@@ -150,7 +150,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { icon: TruckIcon, title: 'Free Shipping', desc: 'On orders over Rs. 10,000' },
+              { icon: TruckIcon, title: 'Fast Delivery', desc: 'Reliable shipping across Sri Lanka' },
               { icon: ShieldCheckIcon, title: 'Authenticity Guaranteed', desc: '100% genuine products' },
               { icon: GiftIcon, title: 'Gift Packaging', desc: 'Complimentary gift wrap' },
               { icon: SparklesIcon, title: 'Premium Quality', desc: 'Handpicked selection' }
@@ -168,35 +168,6 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
-      {/* Featured Collections */}
-      {featuredAlbums && featuredAlbums.length > 0 && (
-        <section className="py-20 md:py-28">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Section Header */}
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
-              <div>
-                <span className="text-gold-500 text-sm tracking-[0.3em] uppercase mb-3 block">Curated For You</span>
-                <h2 className="font-serif text-4xl md:text-5xl text-luxury-black">Featured Collections</h2>
-              </div>
-              <Link 
-                to="/albums" 
-                className="group inline-flex items-center gap-2 text-luxury-black text-sm tracking-wider uppercase mt-4 md:mt-0"
-              >
-                View All Collections
-                <ArrowRightIcon className="h-4 w-4 transform group-hover:translate-x-2 transition-transform" />
-              </Link>
-            </div>
-
-            {/* Albums Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredAlbums.slice(0, 3).map((album) => (
-                <AlbumCard key={album.id} album={album} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Divider with Quote */}
       <section className="py-16 bg-luxury-pearl">

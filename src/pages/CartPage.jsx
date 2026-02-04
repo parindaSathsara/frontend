@@ -90,18 +90,34 @@ const CartPage = () => {
                 // Get display data based on item type
                 const displayItem = isAlbum ? album : product;
                 const imageUrl = isAlbum 
-                  ? (album.cover_image || 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=400&q=80')
+                  ? (item.cover_image || album.cover_image || 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=400&q=80')
                   : (product.primary_image?.image_path || product.primaryImage?.image_path || product.images?.[0]?.image_path || 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400&q=80');
-                const price = parseFloat(item.price || displayItem.final_price || displayItem.sale_price || displayItem.price);
+                
+                // For local cart, price is stored directly on the item
+                // For server cart, it might be on item.price or nested in product/album
+                let price = 0;
+                if (item.price && !isNaN(parseFloat(item.price))) {
+                  price = parseFloat(item.price);
+                } else if (item.final_price && !isNaN(parseFloat(item.final_price))) {
+                  price = parseFloat(item.final_price);
+                } else if (displayItem.final_price && !isNaN(parseFloat(displayItem.final_price))) {
+                  price = parseFloat(displayItem.final_price);
+                } else if (displayItem.sale_price && !isNaN(parseFloat(displayItem.sale_price))) {
+                  price = parseFloat(displayItem.sale_price);
+                } else if (displayItem.price && !isNaN(parseFloat(displayItem.price))) {
+                  price = parseFloat(displayItem.price);
+                }
+                
                 const itemName = item.name || displayItem.name || (isAlbum ? 'Album' : 'Product');
-                const itemSlug = displayItem.slug || item.slug;
+                const itemSlug = item.slug || displayItem.slug;
                 const categoryName = isAlbum 
                   ? 'Product Bundle' 
                   : (product.category?.name || item.category?.name || 'Collection');
                 const itemLink = isAlbum ? `/albums/${itemSlug}` : `/products/${itemSlug}`;
+                const itemKey = item.album_id || item.id;
                 
                 return (
-                  <div key={item.id} className="py-8 flex gap-6">
+                  <div key={itemKey} className="py-8 flex gap-6">
                     <Link to={itemLink} className="flex-shrink-0 w-32 h-40 bg-luxury-pearl overflow-hidden">
                       <img src={imageUrl} alt={itemName} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                     </Link>
@@ -122,7 +138,7 @@ const CartPage = () => {
                       <div className="flex items-center justify-between mt-4">
                         <div className="flex items-center border border-luxury-silver/30">
                           <button
-                            onClick={() => updateQuantity(item.id, (item.quantity || 1) - 1)}
+                            onClick={() => updateQuantity(itemKey, (item.quantity || 1) - 1)}
                             disabled={(item.quantity || 1) <= 1}
                             className="w-10 h-10 flex items-center justify-center text-luxury-black hover:bg-luxury-pearl disabled:opacity-50 transition-colors"
                           >
@@ -132,13 +148,13 @@ const CartPage = () => {
                             {item.quantity || 1}
                           </span>
                           <button
-                            onClick={() => updateQuantity(item.id, (item.quantity || 1) + 1)}
+                            onClick={() => updateQuantity(itemKey, (item.quantity || 1) + 1)}
                             className="w-10 h-10 flex items-center justify-center text-luxury-black hover:bg-luxury-pearl transition-colors"
                           >
                             <PlusIcon className="h-4 w-4" />
                           </button>
                         </div>
-                        <button onClick={() => removeFromCart(item.id)} className="text-luxury-silver hover:text-red-600 transition-colors">
+                        <button onClick={() => removeFromCart(itemKey)} className="text-luxury-silver hover:text-red-600 transition-colors">
                           <TrashIcon className="h-5 w-5" />
                         </button>
                       </div>
@@ -177,8 +193,9 @@ const CartPage = () => {
                 )}
                 <div className="flex justify-between text-luxury-silver">
                   <span>Shipping</span>
-                  <span className="text-green-600">Free</span>
+                  <span className="text-gold-600 text-sm">Calculated at checkout</span>
                 </div>
+                <p className="text-xs text-luxury-silver">Flat rate: LKR 500 per kilo</p>
               </div>
 
               <div className="flex justify-between py-6 border-b border-luxury-silver/20">
@@ -227,7 +244,7 @@ const CartPage = () => {
               <div className="mt-8 space-y-3">
                 <div className="flex items-center gap-3 text-luxury-silver">
                   <TruckIcon className="h-5 w-5 text-gold-500" />
-                  <span className="text-sm">Free shipping on orders over Rs. 10,000</span>
+                  <span className="text-sm">Shipping calculated at checkout</span>
                 </div>
                 <div className="flex items-center gap-3 text-luxury-silver">
                   <ShieldCheckIcon className="h-5 w-5 text-gold-500" />

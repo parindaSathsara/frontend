@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+// Use environment variable or fallback to EC2 backend
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://18.206.235.45:8000/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.DEV ? '/api' : API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -75,6 +78,7 @@ export const cartAPI = {
   applyCoupon: (data) => api.post('/cart/apply-coupon', data),
   removeCoupon: () => api.delete('/cart/remove-coupon'),
   clear: () => api.delete('/cart/clear'),
+  syncGuestCart: (items) => api.post('/cart/sync', { items }),
 };
 
 // Order APIs
@@ -214,6 +218,15 @@ export const adminAPI = {
   createCoupon: (data) => api.post('/admin/coupons', data),
   updateCoupon: (id, data) => api.put(`/admin/coupons/${id}`, data),
   deleteCoupon: (id) => api.delete(`/admin/coupons/${id}`),
+
+  // Settings
+  getSettings: (params) => api.get('/admin/settings', { params }),
+  getShippingSettings: () => api.get('/admin/settings/shipping'),
+  updateShippingSettings: (data) => api.put('/admin/settings/shipping', data),
+  updateSetting: (key, data) => api.put(`/admin/settings/${key}`, data),
 };
+
+// Public shipping settings
+export const getPublicShippingSettings = () => api.get('/shipping-settings');
 
 export default api;

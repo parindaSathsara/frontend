@@ -27,7 +27,7 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-luxury-white">
       {/* Page Header */}
-      <div className="bg-luxury-black py-16 md:py-24">
+      <div className="bg-luxury-black py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-gold-500 text-sm tracking-[0.3em] uppercase mb-4 block">Get In Touch</span>
           <h1 className="font-serif text-4xl md:text-5xl text-white mb-4">Contact Us</h1>
@@ -52,12 +52,11 @@ const ContactPage = () => {
                   <MapPinIcon className="h-6 w-6 text-gold-500" />
                 </div>
                 <div>
-                  <h3 className="font-serif text-lg text-luxury-black mb-2">Visit Our Store</h3>
+                  <h3 className="font-serif text-lg text-luxury-black mb-2">Visit Us</h3>
                   <p className="text-luxury-charcoal">
-                    SH Women's Boutique<br />
-                    123 Fashion Street, Linking Road<br />
-                    Bandra West, Mumbai 400050<br />
-                    Maharashtra, India
+                    SH Women's<br />
+                    18/3, Greenland Mawatha<br />
+                    Dehiwela, Sri Lanka
                   </p>
                 </div>
               </div>
@@ -69,8 +68,8 @@ const ContactPage = () => {
                 <div>
                   <h3 className="font-serif text-lg text-luxury-black mb-2">Call Us</h3>
                   <p className="text-luxury-charcoal">
-                    Toll Free: <a href="tel:+911800123456" className="text-gold-600 hover:text-gold-700">1800-123-456</a><br />
-                    WhatsApp: <a href="https://wa.me/919876543210" className="text-gold-600 hover:text-gold-700">+91 98765 43210</a>
+                    Phone: <a href="tel:+94771773231" className="text-gold-600 hover:text-gold-700">0771773231</a><br />
+                    WhatsApp: <a href="https://wa.me/94771773231" className="text-gold-600 hover:text-gold-700">0771773231</a>
                   </p>
                 </div>
               </div>
@@ -82,9 +81,7 @@ const ContactPage = () => {
                 <div>
                   <h3 className="font-serif text-lg text-luxury-black mb-2">Email Us</h3>
                   <p className="text-luxury-charcoal">
-                    General: <a href="mailto:hello@shwomens.com" className="text-gold-600 hover:text-gold-700">hello@shwomens.com</a><br />
-                    Support: <a href="mailto:support@shwomens.com" className="text-gold-600 hover:text-gold-700">support@shwomens.com</a><br />
-                    Orders: <a href="mailto:orders@shwomens.com" className="text-gold-600 hover:text-gold-700">orders@shwomens.com</a>
+                    <a href="mailto:CVO@shwomens.com" className="text-gold-600 hover:text-gold-700">CVO@shwomens.com</a>
                   </p>
                 </div>
               </div>
@@ -96,9 +93,7 @@ const ContactPage = () => {
                 <div>
                   <h3 className="font-serif text-lg text-luxury-black mb-2">Business Hours</h3>
                   <p className="text-luxury-charcoal">
-                    Monday - Saturday: 10:00 AM - 8:00 PM<br />
-                    Sunday: 11:00 AM - 6:00 PM<br />
-                    <span className="text-gold-600">Customer Support: 9:00 AM - 9:00 PM (All days)</span>
+                    On appointment
                   </p>
                 </div>
               </div>
@@ -242,19 +237,6 @@ const ContactPage = () => {
           </div>
         </div>
 
-        {/* FAQ CTA */}
-        <div className="mt-20 bg-luxury-black p-12 text-center">
-          <h2 className="font-serif text-2xl text-white mb-4">Looking for Quick Answers?</h2>
-          <p className="text-luxury-silver mb-8 max-w-xl mx-auto">
-            Check our frequently asked questions for instant answers to common queries.
-          </p>
-          <Link
-            to="/faq"
-            className="inline-block px-8 py-4 border border-gold-500 text-gold-500 text-sm tracking-wider uppercase hover:bg-gold-500 hover:text-luxury-black transition-all duration-300"
-          >
-            View FAQs
-          </Link>
-        </div>
       </div>
     </div>
   );

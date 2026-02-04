@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { albumAPI } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../components/Toast';
+import { formatCurrency } from '../utils/currency';
 import {
   ArrowLeftIcon,
   ShoppingBagIcon,
@@ -117,6 +118,11 @@ const AlbumDetailPage = () => {
         item_type: 'album',
         album_id: album.id,
         quantity: quantity,
+        album: {
+          ...album,
+          price: pricing.final,
+          final_price: pricing.final,
+        },
       });
       
       if (result.success) {
@@ -263,15 +269,15 @@ const AlbumDetailPage = () => {
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
               <div className="flex items-end gap-4 mb-4">
                 <span className="text-3xl font-bold text-gray-900">
-                  ₹{pricing.final.toFixed(2)}
+                  {formatCurrency(pricing.final)}
                 </span>
                 {pricing.savings > 0 && (
                   <>
                     <span className="text-lg text-gray-400 line-through">
-                      ₹{pricing.calculated.toFixed(2)}
+                      {formatCurrency(pricing.calculated)}
                     </span>
                     <span className="px-2 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
-                      Save ₹{pricing.savings.toFixed(2)}
+                      Save {formatCurrency(pricing.savings)}
                     </span>
                   </>
                 )}
@@ -346,8 +352,8 @@ const AlbumDetailPage = () => {
               <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
                 <TruckIcon className="h-6 w-6 text-gold-500" />
                 <div>
-                  <p className="font-medium text-gray-900 text-sm">Free Shipping</p>
-                  <p className="text-xs text-gray-500">On orders over ₹1000</p>
+                  <p className="font-medium text-gray-900 text-sm">Nationwide Delivery</p>
+                  <p className="text-xs text-gray-500">LKR 500 per kilo</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
@@ -360,8 +366,8 @@ const AlbumDetailPage = () => {
               <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
                 <CheckIcon className="h-6 w-6 text-gold-500" />
                 <div>
-                  <p className="font-medium text-gray-900 text-sm">Easy Returns</p>
-                  <p className="text-xs text-gray-500">7-day return policy</p>
+                  <p className="font-medium text-gray-900 text-sm">Defect Returns</p>
+                  <p className="text-xs text-gray-500">Report within 12 hours</p>
                 </div>
               </div>
             </div>
@@ -403,7 +409,7 @@ const AlbumDetailPage = () => {
                   </p>
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-gray-900">
-                      ₹{parseFloat(product.final_price || product.price || 0).toFixed(2)}
+                      {formatCurrency(parseFloat(product.final_price || product.price || 0))}
                     </span>
                     <span className="text-sm text-gray-500">
                       Qty: {product.pivot?.quantity || 1}

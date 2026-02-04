@@ -7,7 +7,8 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const { register } = useAuth();
   const [formData, setFormData] = useState({
-    name: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -94,21 +95,38 @@ const RegisterPage = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Name */}
-            <div>
-              <label htmlFor="name" className="block text-xs text-luxury-silver tracking-wider uppercase mb-2">
-                Full Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full px-4 py-4 bg-transparent border border-luxury-silver/30 text-luxury-black placeholder-luxury-silver/50 focus:border-gold-500 focus:outline-none transition-colors"
-                placeholder="Enter your full name"
-              />
+            {/* Name Fields */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="first_name" className="block text-xs text-luxury-silver tracking-wider uppercase mb-2">
+                  First Name
+                </label>
+                <input
+                  id="first_name"
+                  name="first_name"
+                  type="text"
+                  required
+                  value={formData.first_name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-4 bg-transparent border border-luxury-silver/30 text-luxury-black placeholder-luxury-silver/50 focus:border-gold-500 focus:outline-none transition-colors"
+                  placeholder="First name"
+                />
+              </div>
+              <div>
+                <label htmlFor="last_name" className="block text-xs text-luxury-silver tracking-wider uppercase mb-2">
+                  Last Name
+                </label>
+                <input
+                  id="last_name"
+                  name="last_name"
+                  type="text"
+                  required
+                  value={formData.last_name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-4 bg-transparent border border-luxury-silver/30 text-luxury-black placeholder-luxury-silver/50 focus:border-gold-500 focus:outline-none transition-colors"
+                  placeholder="Last name"
+                />
+              </div>
             </div>
 
             {/* Email */}
@@ -303,7 +321,7 @@ const RegisterPage = () => {
             {[
               'Exclusive member discounts',
               'Early access to collections',
-              'Free shipping on first order',
+              'Exclusive member discounts',
               'Personalized recommendations'
             ].map((benefit, index) => (
               <div key={index} className="flex items-center gap-3 text-white/80">

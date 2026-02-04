@@ -16,7 +16,7 @@ const Layout = () => {
   return (
     <div className="min-h-screen flex flex-col bg-luxury-white">
       <Header />
-      <main className={`flex-grow ${!isHomePage ? 'pt-14 md:pt-[88px]' : ''}`}>
+      <main className={`flex-grow ${!isHomePage ? 'pt-32 md:pt-40' : ''}`}>
         <Outlet />
       </main>
       <Footer />

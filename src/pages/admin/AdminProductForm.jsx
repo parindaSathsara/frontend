@@ -31,6 +31,7 @@ const AdminProductForm = () => {
     price: '',
     sale_price: '',
     cost_price: '',
+    weight: '',
     sku: '',
     is_featured: false,
     is_trending: false,
@@ -87,6 +88,7 @@ const AdminProductForm = () => {
         price: product.price || '',
         sale_price: product.sale_price || '',
         cost_price: product.cost_price || '',
+        weight: product.weight || '',
         sku: product.sku || '',
         is_featured: product.is_featured || false,
         is_trending: product.is_trending || false,
@@ -242,6 +244,7 @@ const AdminProductForm = () => {
         price: parseFloat(formData.price),
         sale_price: formData.sale_price ? parseFloat(formData.sale_price) : null,
         cost_price: formData.cost_price ? parseFloat(formData.cost_price) : null,
+        weight: formData.weight ? parseFloat(formData.weight) : null,
         stock_quantity: parseInt(formData.stock_quantity),
         low_stock_threshold: parseInt(formData.low_stock_threshold),
       };
@@ -485,6 +488,21 @@ const AdminProductForm = () => {
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500"
                 placeholder="0.00"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
+              <input
+                type="number"
+                name="weight"
+                value={formData.weight}
+                onChange={handleInputChange}
+                min="0"
+                step="0.001"
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500"
+                placeholder="0.000"
+              />
+              <p className="text-sm text-gray-500 mt-1">Product weight for shipping calculation</p>
             </div>
           </div>
         </div>

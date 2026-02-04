@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { orderAPI } from '../../services/api';
 import {
   ShoppingBagIcon,
@@ -9,9 +9,11 @@ import {
   XCircleIcon,
   ChevronRightIcon,
   MagnifyingGlassIcon,
+  DocumentArrowUpIcon,
 } from '@heroicons/react/24/outline';
 
 const OrdersPage = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -215,10 +217,21 @@ const OrdersPage = () => {
 
                 {/* Action Bar for Pending Payment */}
                 {order.payment_method === 'bank_transfer' && order.payment_status === 'pending' && (
-                  <div className="px-4 md:px-6 py-3 bg-yellow-50 border-t border-yellow-100">
+                  <div className="px-4 md:px-6 py-3 bg-yellow-50 border-t border-yellow-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <p className="text-sm text-yellow-700">
                       <span className="font-medium">Action required:</span> Please upload your payment slip to complete this order
                     </p>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        navigate(`/orders/${order.order_number}`);
+                      }}
+                      className="inline-flex items-center justify-center px-4 py-2 bg-gold-500 text-white text-sm font-medium rounded-lg hover:bg-gold-600 transition-colors whitespace-nowrap"
+                    >
+                      <DocumentArrowUpIcon className="h-4 w-4 mr-2" />
+                      Upload Payment Slip
+                    </button>
                   </div>
                 )}
               </Link>

@@ -426,13 +426,13 @@ const ProductDetailPage = () => {
             <div className="grid grid-cols-3 gap-4 mb-8">
               <div className="text-center p-4 bg-luxury-pearl/50">
                 <TruckIcon className="h-6 w-6 mx-auto text-gold-600 mb-2" />
-                <p className="text-xs text-luxury-charcoal">Free Shipping</p>
-                <p className="text-[10px] text-luxury-silver">Orders over Rs. 10,000</p>
+                <p className="text-xs text-luxury-charcoal">Nationwide Delivery</p>
+                <p className="text-[10px] text-luxury-silver">LKR 500 per kilo</p>
               </div>
               <div className="text-center p-4 bg-luxury-pearl/50">
                 <ArrowPathIcon className="h-6 w-6 mx-auto text-gold-600 mb-2" />
-                <p className="text-xs text-luxury-charcoal">Easy Returns</p>
-                <p className="text-[10px] text-luxury-silver">15 days return</p>
+                <p className="text-xs text-luxury-charcoal">Defect Returns</p>
+                <p className="text-[10px] text-luxury-silver">Within 12 hours</p>
               </div>
               <div className="text-center p-4 bg-luxury-pearl/50">
                 <ShieldCheckIcon className="h-6 w-6 mx-auto text-gold-600 mb-2" />

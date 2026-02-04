@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { albumAPI } from '../services/api';
 import AlbumCard from '../components/AlbumCard';
+import { formatCurrency } from '../utils/currency';
 import {
   MagnifyingGlassIcon,
   FunnelIcon,
@@ -208,7 +209,7 @@ const AlbumsPage = () => {
                     </span>
                     {album.final_price && (
                       <span className="font-semibold text-gray-900">
-                        ₹{parseFloat(album.final_price).toFixed(2)}
+                        {formatCurrency(parseFloat(album.final_price))}
                       </span>
                     )}
                     {album.discount_percentage > 0 && (

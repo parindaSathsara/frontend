@@ -9,6 +9,7 @@ import {
   UsersIcon,
   CubeIcon,
   SwatchIcon,
+  TruckIcon,
   Bars3Icon,
   XMarkIcon,
   ArrowRightOnRectangleIcon,
@@ -31,6 +32,7 @@ const AdminLayout = () => {
     { name: 'Inventory', href: '/admin/inventory', icon: CubeIcon },
     { name: 'Albums', href: '/admin/albums', icon: PhotoIcon },
     { name: 'Variations', href: '/admin/variations', icon: SwatchIcon },
+    { name: 'Shipping', href: '/admin/settings/shipping', icon: TruckIcon },
   ];
 
   const isActive = (path) => {

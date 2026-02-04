@@ -18,7 +18,6 @@ import RegisterPage from './pages/RegisterPage'
 import ShippingPage from './pages/ShippingPage'
 import ReturnsPage from './pages/ReturnsPage'
 import PrivacyPage from './pages/PrivacyPage'
-import TermsPage from './pages/TermsPage'
 import ContactPage from './pages/ContactPage'
 import AboutPage from './pages/AboutPage'
 
@@ -39,6 +38,7 @@ import AdminOrderDetail from './pages/admin/AdminOrderDetail'
 import AdminCustomers from './pages/admin/AdminCustomers'
 import AdminInventory from './pages/admin/AdminInventory'
 import AdminVariations from './pages/admin/AdminVariations'
+import AdminShippingSettings from './pages/admin/AdminShippingSettings'
 
 import ProtectedRoute from './components/ProtectedRoute'
 import AdminRoute from './components/AdminRoute'
@@ -61,7 +61,6 @@ function App() {
         <Route path="shipping" element={<ShippingPage />} />
         <Route path="returns" element={<ReturnsPage />} />
         <Route path="privacy" element={<PrivacyPage />} />
-        <Route path="terms" element={<TermsPage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="about" element={<AboutPage />} />
         
@@ -88,6 +87,7 @@ function App() {
         <Route path="customers" element={<AdminCustomers />} />
         <Route path="inventory" element={<AdminInventory />} />
         <Route path="variations" element={<AdminVariations />} />
+        <Route path="settings/shipping" element={<AdminShippingSettings />} />
       </Route>
     </Routes>
   )

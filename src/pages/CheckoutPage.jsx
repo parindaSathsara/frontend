@@ -84,8 +84,15 @@ const CheckoutPage = () => {
 
   const cart = isAuthenticated() ? serverCart : { items: cartItems, total: cartTotal };
   const displayItems = cart?.items || [];
-  const displayTotal = cart?.total || cartTotal;
-  const shippingCost = displayTotal >= 10000 ? 0 : 350;
+  
+  // Calculate total from items directly (to avoid any backend calculation issues)
+  const displayTotal = displayItems.reduce((sum, item) => {
+    const price = parseFloat(item.price || item.product?.price || 0);
+    const quantity = item.quantity || 1;
+    return sum + (price * quantity);
+  }, 0) || cartTotal;
+  
+  const shippingCost = 0; // Will be calculated based on weight at order placement
   const finalTotal = displayTotal + shippingCost;
 
   // Redirect if not authenticated
@@ -906,7 +913,7 @@ const CheckoutPage = () => {
                           alt={itemName}
                           className="w-14 h-16 object-cover bg-luxury-pearl"
                         />
-                        <span className="absolute -top-2 -right-2 w-5 h-5 bg-luxury-black text-white text-xs flex items-center justify-center rounded-full">
+                        <span className="absolute -top-2 -right-2 min-w-6 h-6 px-1 bg-luxury-black text-white text-xs flex items-center justify-center rounded-full">
                           {item.quantity}
                         </span>
                       </div>
@@ -926,18 +933,14 @@ const CheckoutPage = () => {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-luxury-silver">Shipping</span>
-                  <span className={shippingCost === 0 ? 'text-green-600' : ''}>
-                    {shippingCost === 0 ? 'Free' : `Rs. ${shippingCost.toLocaleString()}`}
+                  <span className="text-gold-600">
+                    Calculated based on weight
                   </span>
                 </div>
-                {shippingCost > 0 && (
-                  <p className="text-xs text-gold-600">
-                    Add Rs. {(10000 - displayTotal).toLocaleString()} more for free shipping
-                  </p>
-                )}
+                <p className="text-xs text-luxury-silver">Flat rate: LKR 500 per kilo</p>
                 <div className="flex justify-between text-lg font-semibold border-t border-luxury-silver/20 pt-3">
-                  <span>Total</span>
-                  <span>Rs. {finalTotal.toLocaleString()}</span>
+                  <span>Subtotal</span>
+                  <span>Rs. {displayTotal.toLocaleString()}</span>
                 </div>
               </div>
 

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { cartAPI } from '../services/api';
 import { useAuth } from './AuthContext';
@@ -17,8 +17,9 @@ export const useCart = () => {
 const CART_STORAGE_KEY = 'shwomens_cart';
 
 export const CartProvider = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const queryClient = useQueryClient();
+  const [hasSynced, setHasSynced] = useState(false);
   
   // Local cart for guests
   const [localCart, setLocalCart] = useState(() => {
@@ -34,6 +35,62 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(localCart));
   }, [localCart]);
 
+  // Sync guest cart to server when user logs in
+  const syncGuestCartToServer = useCallback(async () => {
+    if (localCart.items.length > 0) {
+      try {
+        // Format items for server sync
+        const itemsToSync = localCart.items.map(item => ({
+          item_type: item.item_type || 'product',
+          product_id: item.item_type === 'album' ? null : (item.id || item.product_id),
+          album_id: item.item_type === 'album' ? (item.album_id || item.id) : null,
+          variant_id: item.variant_id || null,
+          quantity: item.quantity || 1,
+        }));
+        
+        await cartAPI.syncGuestCart(itemsToSync);
+        // Clear local cart after successful sync
+        setLocalCart({ items: [], total: 0 });
+        // Refresh server cart
+        queryClient.invalidateQueries('cart');
+      } catch (error) {
+        console.error('Failed to sync guest cart:', error);
+        // Even if sync fails, still try to add items individually
+        for (const item of localCart.items) {
+          try {
+            const serverData = {
+              item_type: item.item_type || 'product',
+              quantity: item.quantity || 1,
+            };
+            if (item.item_type === 'album') {
+              serverData.album_id = item.album_id || item.id;
+            } else {
+              serverData.product_id = item.id || item.product_id;
+              serverData.variant_id = item.variant_id || null;
+            }
+            await cartAPI.addItem(serverData);
+          } catch (e) {
+            console.error('Failed to add item:', e);
+          }
+        }
+        setLocalCart({ items: [], total: 0 });
+        queryClient.invalidateQueries('cart');
+      }
+    }
+    setHasSynced(true);
+  }, [localCart.items, queryClient]);
+
+  // Sync cart when user logs in
+  useEffect(() => {
+    if (isAuthenticated() && !hasSynced && localCart.items.length > 0) {
+      syncGuestCartToServer();
+    }
+    // Reset sync flag when user logs out
+    if (!isAuthenticated()) {
+      setHasSynced(false);
+    }
+  }, [isAuthenticated, hasSynced, localCart.items.length, syncGuestCartToServer]);
+
   // Fetch cart data for authenticated users
   const { data: serverCart, isLoading } = useQuery(
     'cart',
@@ -47,15 +104,20 @@ export const CartProvider = ({ children }) => {
   // Calculate local cart total
   const calculateLocalTotal = (items) => {
     return items.reduce((sum, item) => {
-      const price = item.sale_price || item.price;
-      return sum + (parseFloat(price) * item.quantity);
+      const price = parseFloat(item.final_price || item.sale_price || item.price || 0);
+      return sum + (price * item.quantity);
     }, 0);
   };
 
   // Add to local cart
   const addToLocalCart = (product, quantity = 1) => {
     setLocalCart(prev => {
-      const existingIndex = prev.items.findIndex(item => item.id === product.id);
+      // For albums, use album_id as the identifier; for products, use id
+      const itemId = product.album_id || product.id;
+      const existingIndex = prev.items.findIndex(item => {
+        const existingId = item.album_id || item.id;
+        return existingId === itemId && item.item_type === product.item_type;
+      });
       let newItems;
       
       if (existingIndex >= 0) {
@@ -65,7 +127,9 @@ export const CartProvider = ({ children }) => {
             : item
         );
       } else {
-        newItems = [...prev.items, { ...product, quantity }];
+        // Ensure price is set correctly
+        const itemPrice = product.final_price || product.sale_price || product.price || 0;
+        newItems = [...prev.items, { ...product, quantity, price: itemPrice, final_price: itemPrice }];
       }
       
       return { items: newItems, total: calculateLocalTotal(newItems) };
@@ -73,23 +137,27 @@ export const CartProvider = ({ children }) => {
   };
 
   // Update local cart item
-  const updateLocalCartItem = (productId, quantity) => {
+  const updateLocalCartItem = (itemId, quantity) => {
     if (quantity <= 0) {
-      removeFromLocalCart(productId);
+      removeFromLocalCart(itemId);
       return;
     }
     setLocalCart(prev => {
-      const newItems = prev.items.map(item => 
-        item.id === productId ? { ...item, quantity } : item
-      );
+      const newItems = prev.items.map(item => {
+        const currentId = item.album_id || item.id;
+        return currentId === itemId ? { ...item, quantity } : item;
+      });
       return { items: newItems, total: calculateLocalTotal(newItems) };
     });
   };
 
   // Remove from local cart
-  const removeFromLocalCart = (productId) => {
+  const removeFromLocalCart = (itemId) => {
     setLocalCart(prev => {
-      const newItems = prev.items.filter(item => item.id !== productId);
+      const newItems = prev.items.filter(item => {
+        const currentId = item.album_id || item.id;
+        return currentId !== itemId;
+      });
       return { items: newItems, total: calculateLocalTotal(newItems) };
     });
   };
@@ -146,8 +214,20 @@ export const CartProvider = ({ children }) => {
       }
     } else {
       // For guests, store full product/album data locally
-      const item = itemData.product || itemData.album || itemData;
-      addToLocalCart({ ...item, item_type: itemData.item_type || 'product' }, itemData.quantity || 1);
+      let item;
+      if (itemData.item_type === 'album') {
+        // For albums, merge album data with album_id and ensure price is set
+        item = {
+          ...itemData.album,
+          album_id: itemData.album_id,
+          item_type: 'album',
+        };
+      } else {
+        // For products
+        item = itemData.product || itemData;
+        item.item_type = 'product';
+      }
+      addToLocalCart(item, itemData.quantity || 1);
       return { success: true };
     }
   };
@@ -197,7 +277,14 @@ export const CartProvider = ({ children }) => {
   // Get current cart based on auth status
   const cart = isAuthenticated() ? serverCart : localCart;
   const cartItems = cart?.items || [];
-  const cartTotal = cart?.total || 0;
+  
+  // Calculate total from items directly (don't trust server's cached total)
+  const cartTotal = cartItems.reduce((sum, item) => {
+    const price = parseFloat(item.price || item.subtotal / item.quantity || 0);
+    const quantity = item.quantity || 1;
+    return sum + (price * quantity);
+  }, 0);
+  
   const cartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
   const value = {

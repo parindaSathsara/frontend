@@ -73,7 +73,7 @@ const ProductsPage = () => {
   return (
     <div className="bg-luxury-white min-h-screen">
       {/* Page Header */}
-      <div className="bg-luxury-black py-16 md:py-24">
+      <div className="bg-luxury-black py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-gold-500 text-sm tracking-[0.3em] uppercase mb-4 block">
             {search ? 'Search Results' : 'Explore Our Collection'}
@@ -165,7 +165,7 @@ const ProductsPage = () => {
         <div className="flex gap-8">
           {/* Sidebar Filters */}
           <aside className={`${showFilters ? 'block' : 'hidden'} lg:block w-full lg:w-64 flex-shrink-0`}>
-            <div className="sticky top-24 space-y-8">
+            <div className="sticky top-40 max-h-[calc(100vh-180px)] overflow-y-auto pr-2 space-y-8 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
               {/* Clear Filters */}
               {hasActiveFilters && (
                 <button
@@ -260,10 +260,10 @@ const ProductsPage = () => {
                 <div className={`grid ${
                   viewMode === 'grid'
                     ? 'grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6'
-                    : 'grid-cols-1 gap-6'
+                    : 'grid-cols-1 gap-4'
                 }`}>
                   {(productsData.data || productsData.products).map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard key={product.id} product={product} viewMode={viewMode} />
                   ))}
                 </div>
 
