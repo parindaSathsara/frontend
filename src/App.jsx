@@ -31,6 +31,7 @@ import WishlistPage from './pages/customer/WishlistPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminProducts from './pages/admin/AdminProducts'
 import AdminProductForm from './pages/admin/AdminProductForm'
+import AdminCategories from './pages/admin/AdminCategories'
 import AdminAlbums from './pages/admin/AdminAlbums'
 import AdminAlbumForm from './pages/admin/AdminAlbumForm'
 import AdminOrders from './pages/admin/AdminOrders'
@@ -42,54 +43,59 @@ import AdminShippingSettings from './pages/admin/AdminShippingSettings'
 
 import ProtectedRoute from './components/ProtectedRoute'
 import AdminRoute from './components/AdminRoute'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="products" element={<ProductsPage />} />
-        <Route path="products/:slug" element={<ProductDetailPage />} />
-        <Route path="albums" element={<AlbumsPage />} />
-        <Route path="albums/:slug" element={<AlbumDetailPage />} />
-        <Route path="cart" element={<CartPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegisterPage />} />
-        
-        {/* Policy & Info routes */}
-        <Route path="shipping" element={<ShippingPage />} />
-        <Route path="returns" element={<ReturnsPage />} />
-        <Route path="privacy" element={<PrivacyPage />} />
-        <Route path="contact" element={<ContactPage />} />
-        <Route path="about" element={<AboutPage />} />
-        
-        {/* Protected customer routes */}
-        <Route path="checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
-        <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-        <Route path="orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
-        <Route path="orders/:orderNumber" element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>} />
-        <Route path="wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
-      </Route>
+    <>
+      <ScrollToTop />
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="products" element={<ProductsPage />} />
+          <Route path="products/:slug" element={<ProductDetailPage />} />
+          <Route path="albums" element={<AlbumsPage />} />
+          <Route path="albums/:slug" element={<AlbumDetailPage />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+          
+          {/* Policy & Info routes */}
+          <Route path="shipping" element={<ShippingPage />} />
+          <Route path="returns" element={<ReturnsPage />} />
+          <Route path="privacy" element={<PrivacyPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="about" element={<AboutPage />} />
+          
+          {/* Protected customer routes */}
+          <Route path="checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+          <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
+          <Route path="orders/:orderNumber" element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>} />
+          <Route path="wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
+        </Route>
 
-      {/* Admin routes */}
-      <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
-        <Route index element={<AdminDashboard />} />
-        <Route path="products" element={<AdminProducts />} />
-        <Route path="products/create" element={<AdminProductForm />} />
-        <Route path="products/edit/:id" element={<AdminProductForm />} />
-        <Route path="albums" element={<AdminAlbums />} />
-        <Route path="albums/create" element={<AdminAlbumForm />} />
-        <Route path="albums/edit/:id" element={<AdminAlbumForm />} />
-        <Route path="albums/:id" element={<AdminAlbumForm />} />
-        <Route path="orders" element={<AdminOrders />} />
-        <Route path="orders/:id" element={<AdminOrderDetail />} />
-        <Route path="customers" element={<AdminCustomers />} />
-        <Route path="inventory" element={<AdminInventory />} />
-        <Route path="variations" element={<AdminVariations />} />
-        <Route path="settings/shipping" element={<AdminShippingSettings />} />
-      </Route>
-    </Routes>
+        {/* Admin routes */}
+        <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="products/create" element={<AdminProductForm />} />
+          <Route path="products/edit/:id" element={<AdminProductForm />} />
+          <Route path="categories" element={<AdminCategories />} />
+          <Route path="albums" element={<AdminAlbums />} />
+          <Route path="albums/create" element={<AdminAlbumForm />} />
+          <Route path="albums/edit/:id" element={<AdminAlbumForm />} />
+          <Route path="albums/:id" element={<AdminAlbumForm />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="orders/:id" element={<AdminOrderDetail />} />
+          <Route path="customers" element={<AdminCustomers />} />
+          <Route path="inventory" element={<AdminInventory />} />
+          <Route path="variations" element={<AdminVariations />} />
+          <Route path="settings/shipping" element={<AdminShippingSettings />} />
+        </Route>
+      </Routes>
+    </>
   )
 }
 

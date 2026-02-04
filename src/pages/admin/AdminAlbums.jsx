@@ -173,7 +173,7 @@ const AdminAlbums = () => {
                   <div className="flex items-center justify-between text-sm text-gray-500">
                     <span>{album.products_count || 0} products</span>
                     {album.final_price && (
-                      <span className="font-medium text-gray-900">₹{parseFloat(album.final_price).toFixed(2)}</span>
+                      <span className="font-medium text-gray-900">Rs. {parseFloat(album.final_price).toLocaleString()}</span>
                     )}
                   </div>
                 </div>

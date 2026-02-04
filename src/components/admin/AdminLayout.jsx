@@ -10,6 +10,7 @@ import {
   CubeIcon,
   SwatchIcon,
   TruckIcon,
+  FolderIcon,
   Bars3Icon,
   XMarkIcon,
   ArrowRightOnRectangleIcon,
@@ -27,6 +28,7 @@ const AdminLayout = () => {
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: HomeIcon },
     { name: 'Products', href: '/admin/products', icon: ShoppingBagIcon },
+    { name: 'Categories', href: '/admin/categories', icon: FolderIcon },
     { name: 'Orders', href: '/admin/orders', icon: ClipboardDocumentListIcon },
     { name: 'Customers', href: '/admin/customers', icon: UsersIcon },
     { name: 'Inventory', href: '/admin/inventory', icon: CubeIcon },
