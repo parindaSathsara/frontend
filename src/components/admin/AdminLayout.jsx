@@ -17,6 +17,7 @@ import {
   ChevronDownIcon,
   UserCircleIcon,
   BuildingLibraryIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline';
 
 const AdminLayout = () => {
@@ -35,6 +36,7 @@ const AdminLayout = () => {
     { name: 'Inventory', href: '/admin/inventory', icon: CubeIcon },
     { name: 'Albums', href: '/admin/albums', icon: PhotoIcon },
     { name: 'Variations', href: '/admin/variations', icon: SwatchIcon },
+    { name: 'AI Tools', href: '/admin/ai-tools', icon: SparklesIcon },
     { name: 'Shipping', href: '/admin/settings/shipping', icon: TruckIcon },
     { name: 'Bank Account', href: '/admin/settings/bank', icon: BuildingLibraryIcon },
   ];

@@ -41,6 +41,7 @@ import AdminInventory from './pages/admin/AdminInventory'
 import AdminVariations from './pages/admin/AdminVariations'
 import AdminShippingSettings from './pages/admin/AdminShippingSettings'
 import AdminBankSettings from './pages/admin/AdminBankSettings'
+import AdminAITools from './pages/admin/AdminAITools'
 
 import ProtectedRoute from './components/ProtectedRoute'
 import AdminRoute from './components/AdminRoute'
@@ -93,6 +94,7 @@ function App() {
           <Route path="customers" element={<AdminCustomers />} />
           <Route path="inventory" element={<AdminInventory />} />
           <Route path="variations" element={<AdminVariations />} />
+          <Route path="ai-tools" element={<AdminAITools />} />
           <Route path="settings/shipping" element={<AdminShippingSettings />} />
           <Route path="settings/bank" element={<AdminBankSettings />} />
         </Route>

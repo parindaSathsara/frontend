@@ -227,6 +227,11 @@ export const adminAPI = {
   getBankSettings: () => api.get('/admin/settings/bank'),
   updateBankSettings: (data) => api.put('/admin/settings/bank', data),
   updateSetting: (key, data) => api.put(`/admin/settings/${key}`, data),
+
+  // AI Tools
+  previewImageTags: () => api.get('/admin/ai/preview-image-tags'),
+  stripImageTags: (data) => api.post('/admin/ai/strip-image-tags', data),
+  generateProduct: (data) => api.post('/admin/ai/generate-product', data),
 };
 
 // Public shipping settings

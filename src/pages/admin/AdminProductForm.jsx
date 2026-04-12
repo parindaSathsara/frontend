@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link, useLocation } from 'react-router-dom';
 import { adminAPI } from '../../services/api';
 import { useToast } from '../../components/Toast';
 import {
@@ -13,6 +13,7 @@ import {
 const AdminProductForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const toast = useToast();
   const isEdit = Boolean(id);
 
@@ -51,6 +52,20 @@ const AdminProductForm = () => {
     fetchInitialData();
     if (isEdit) {
       fetchProduct();
+    }
+    // Pre-fill from AI-generated product
+    if (location.state?.generatedProduct) {
+      const gp = location.state.generatedProduct;
+      setFormData(prev => ({
+        ...prev,
+        name: gp.name || prev.name,
+        description: gp.description || prev.description,
+        short_description: gp.short_description || prev.short_description,
+        price: gp.price || prev.price,
+        sale_price: gp.sale_price || prev.sale_price,
+        meta_title: gp.meta_title || prev.meta_title,
+        meta_description: gp.meta_description || prev.meta_description,
+      }));
     }
   }, [id]);
 
